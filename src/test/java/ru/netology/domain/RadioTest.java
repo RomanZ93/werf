@@ -1,77 +1,90 @@
 package ru.netology.domain;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
 
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From zero station'; 0; 1  ",
-                    "'Go last station'; 8; 9",
-                    "'More maximum station'; 9; 0"
-            }
-            , delimiter = ';'
-    )
-    void pressNextStationTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentStation(start);
+    Radio station = new Radio(9);
 
-        radio.pressNextStation();
-        assertEquals(expected, radio.getCurrentStation());
+    @Test
+
+    public void enteredMaxNumberStation() {
+        int maxNumberStation = 3;
+        Radio station = new Radio(maxNumberStation);
+        int actual = station.getMaxNumberStation();
+        int expected = maxNumberStation;
+        assertEquals(expected, actual);
     }
 
     @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From middle station'; 5; 4",
-                    "'Go first station'; 1; 0",
-                    "'Less minimum station'; 0; 9"
-            }
-            , delimiter = ';'
-    )
-    void pressPrevStationTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentStation(start);
-
-        radio.pressPrevStation();
-        assertEquals(expected, radio.getCurrentStation());
+    @CsvSource({
+            "NumberStationEnter,0,0",
+            "NumberStationEnter,6,6",
+            "NumberStationEnter,9,9",
+            "NumberStationEnter,-1,0",
+            "NumberStationEnter,10,9"
+    })
+    public void numberStationEntered(String name, int enteredNumberStation, int expected) {
+        station.setCurrentNumberStation(enteredNumberStation);
+        station.numberStationEntered(enteredNumberStation);
+        int actual = station.getCurrentNumberStation();
+        assertEquals(expected, actual);
     }
 
     @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Zero volume'; 0; 1",
-                    "'Go max volume'; 9; 10",
-                    "'More maximum volume'; 10; 10"
-            }
-            , delimiter = ';'
-    )
-    void pressPlusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentVolume(start);
-
-        radio.pressPlusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
+    @CsvSource({
+            "NumberStationFrom_0Forward,0,1",
+            "NumberStationFrom_5Forward,5,6",
+            "NumberStationFrom_9Forward,9,0",
+    })
+    public void numberStationNext(String name, int currentNumberStation, int expected) {
+        station.setCurrentNumberStation(currentNumberStation);
+        station.numberStationNext();
+        int actual = station.getCurrentNumberStation();
+        assertEquals(expected, actual);
     }
 
     @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Middle volume'; 5; 4",
-                    "'Go min volume'; 1; 0",
-                    "'Less minimum volume'; 10; 9"
-            }
-            , delimiter = ';'
-    )
-    void pressMinusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentVolume(start);
+    @CsvSource({
+            "NumberStationFrom_0Forward,0,9",
+            "NumberStationFrom_5Forward,5,4",
+            "NumberStationFrom_9Forward,9,8"
+    })
+    public void numberStationPrev(String name, int currentNumberStation, int expected) {
+        station.setCurrentNumberStation(currentNumberStation);
+        station.numberStationPrev();
+        int actual = station.getCurrentNumberStation();
+        assertEquals(expected, actual);
+    }
 
-        radio.pressMinusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
+    @ParameterizedTest
+    @CsvSource({
+            "volumeUpFrom_0,0,1",
+            "volumeUpFrom_5,65,66",
+            "volumeUpFrom_max,100,100"
+
+    })
+    public void volumeStationUp(String name, int currentSoundVolume, int expected) {
+        station.setCurrentSoundVolume(currentSoundVolume);
+        station.volumeStationUp();
+        int actual = station.getCurrentSoundVolume();
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "volumeDownFrom_100,100,99",
+            "volumeDownFrom_60,60,59",
+            "volumeDownFrom_min,0,0"
+    })
+    public void volumeStationDon(String name, int currentSoundVolume, int expected) {
+        station.setCurrentSoundVolume(currentSoundVolume);
+        station.volumeStationDon();
+        int actual = station.getCurrentSoundVolume();
+        assertEquals(expected, actual);
     }
 }
