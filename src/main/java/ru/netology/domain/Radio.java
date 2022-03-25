@@ -7,6 +7,15 @@ public class Radio {
     private final int maxStation = 9;
     private final int minStation = 0;
 
+    public Radio(int currentStation, int currentVolume) {
+        this.currentStation = currentStation;
+        this.currentVolume = currentVolume;
+    }
+
+    public Radio() {
+
+    }
+
     public int getCurrentStation() {
         return currentStation;
     }
@@ -61,4 +70,3 @@ public class Radio {
         setCurrentVolume(currentVolume-1);
     }
 }
-
