@@ -7,6 +7,11 @@ public class Radio {
     private int currentNumberStation = 5;
     private int currentSoundVolume = 50;
 
+    public Radio(int maxNumberStation, int currentNumberStation, int currentSoundVolume) {
+        this.maxNumberStation = maxNumberStation;
+        this.currentNumberStation = currentNumberStation;
+        this.currentSoundVolume = currentSoundVolume;
+    }
 
     public void setCurrentNumberStation(int currentNumberStation) {
         this.currentNumberStation = currentNumberStation;
